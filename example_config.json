@@ -1,0 +1,38 @@
+{
+  "token": "YOUR_DISCORD_TOKEN_HERE",
+  "prefix": ">",
+  "settings": {
+    "channel_ids": [
+      123456789012345678
+    ],
+    "owodm_channelid": 123456789012345678,
+    "channel_change_interval": [5, 15],
+    "animal_types": "all",
+    "slotamount": ["100", "500", "200"],
+    "autocoinflip_amount": ["100", "500", "200"],
+    "random_commands": ["zoo", "ping", "pic animal_cat", "xp"]
+  },
+  "plugins": {
+    "autosell": "true",
+    "autolevelup": "true",
+    "autoslot": "true",
+    "autocoinflip": "true",
+    "autohunt": "true",
+    "autohuntbot": "true",
+    "autopray": "true",
+    "use_random_commands": "true"
+  },
+  "captcha": {
+    "avail_services": ["twocaptcha", "capsolver", "capmonster", "captchaai", "scrappey", "nopecha"],
+    "hcaptcha_service": "twocaptcha",
+    "hcaptcha_key": "YOUR_HCAPTCHA_API_KEY_HERE",
+    "TextToImage_service": "twocaptcha",
+    "TextToImage_key": "YOUR_TEXT_TO_IMAGE_API_KEY_HERE"
+  },
+  "notifications": {
+    "captcha_alerts": "YOUR_DISCORD_WEBHOOK_URL_HERE",
+    "daily_claim_alerts": "YOUR_DISCORD_WEBHOOK_URL_HERE",
+    "huntbot_alert": "YOUR_DISCORD_WEBHOOK_URL_HERE",
+    "funds_alerts": "YOUR_DISCORD_WEBHOOK_URL_HERE"
+  }
+}

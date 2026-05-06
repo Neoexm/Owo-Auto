@@ -62,13 +62,20 @@ cd Owo-Auto
 ```
 step3:
 ```
+rename example_config.json to config.json
+```
+
+step4:
+```
 change settings in config.json
 ```
-step4:
+
+step5:
 ```
 pip install -r requirements.txt
 ```
-step5
+
+step6
 ```
 python main.py
 ```
