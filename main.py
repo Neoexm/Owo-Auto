@@ -1114,22 +1114,25 @@ async def autosleep():
     all_tasks_stop.remove(autosleep)
     if config['plugins']["autohuntbot"] == "true":
         all_tasks_stop.remove(autohuntbot)
-    try:
-        for task in all_tasks_stop:
+    for task in all_tasks_stop:
+        try:
             task.cancel()
-    except RuntimeError:
-        return
+        except RuntimeError:
+            pass
     await asyncio.sleep(tosleep*60)
     all_tasks_stop.append(autosleep)
     if config['plugins']["autohuntbot"] == "true":
         all_tasks_stop.append(autohuntbot) 
     print(f"{Fore.LIGHTGREEN_EX}[Sleeper] Bot Again Resumed{Fore.RESET}")
-    try:
-        for task in all_tasks:
-            task.start()
-            await asyncio.sleep(5)
-    except RuntimeError:
-        return
+    for task in all_tasks:
+        try:
+            if task.is_running():
+                task.restart()
+            else:
+                task.start()
+        except RuntimeError:
+            pass
+        await asyncio.sleep(5)
     
 def get_random_autohunt_amount():
     stored_cowoncy = get_entry()[0]
@@ -1313,22 +1316,25 @@ async def autoowo(ctx):
     wait =random.randrange(3, 8)
     await ctx.send("> Started Auto OwO - By maimaidxer")
     change_channel()
-    try:
-        for task in all_tasks:
-            task.start()
-            await asyncio.sleep(wait)
-    except RuntimeError:
-        return
+    for task in all_tasks:
+        try:
+            if task.is_running():
+                task.restart()
+            else:
+                task.start()
+        except RuntimeError:
+            pass
+        await asyncio.sleep(wait)
 
 
 @client.command()
 async def stopautoowo(ctx):
     await ctx.send("> Stopped Auto OwO")
-    try:
-        for task in all_tasks_stop:
+    for task in all_tasks_stop:
+        try:
             task.cancel()
-    except RuntimeError:
-        return
+        except RuntimeError:
+            pass
     
 def update_json(file_path, key_path, new_value):
     # Read the original file content
