@@ -27,12 +27,16 @@ with open("config.json") as f:
 try:
     prefix = config.get("prefix")
     token = config.get("token")
+    captcha_user_id = int(config.get("user_id"))
     owodm = config['settings']['owodm_channelid']
     captcha_hook_url = config["notifications"]["captcha_alerts"]
     daily_hook_url = config["notifications"]["daily_claim_alerts"]
     huntbot_hook_url = config["notifications"]["huntbot_alert"]
     funds_hook_url = config["notifications"]["funds_alerts"]
     
+except (TypeError, ValueError):
+    print(f"{Fore.RED}[Error] Invalid or missing user_id in config.json{Fore.RESET}")
+    os.system('exit')
 except:
     print("no token found")
 owochannels = config["settings"]["channel_ids"]
@@ -860,8 +864,13 @@ async def on_message(message):
     normalized_content = normalize_message(message.content)
     normalized_lower = normalized_content.lower()
     owo_message_text = extract_owo_message_text(message)
+    mentioned_user_ids = set(getattr(message, "raw_mentions", []))
+    mentioned_user_ids.update(
+        user.id for user in getattr(message, "mentions", []) if getattr(user, "id", None) is not None
+    )
 
-    if ("⚠️" in normalized_content) and (("letter word" in normalized_content)
+    if (captcha_user_id in mentioned_user_ids) and ("⚠️" in normalized_content) and (
+        ("letter word" in normalized_content)
         or ("link" in normalized_content or "https://owobot.com" in normalized_content)
     ):
         print(f"{Fore.CYAN}[captcha] captcha trigger detected: {summarize_message(message)}{Fore.RESET}")
@@ -970,8 +979,8 @@ async def on_message(message):
                 content=f"@everyone Captcha Alert!",
                 description=f"A Captcha Cant Be Solved, Bot Has Been Stopped!",
             )
-            time.sleep(4)
-            sys.exit()
+            print(f"{Fore.YELLOW}[captcha] closing bot connection...{Fore.RESET}")
+            await client.close()
         return
 
     if any(k in normalized_lower for k in ("nu", "your next", "your daily")) and globalname in normalized_content:

@@ -1,5 +1,6 @@
 {
   "token": "YOUR_DISCORD_TOKEN_HERE",
+  "user_id": "your user id here",
   "prefix": ">",
   "settings": {
     "channel_ids": [

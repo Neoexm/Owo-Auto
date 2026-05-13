@@ -72,16 +72,20 @@ def Hcaptcha_Solver():
                 return
     elif service == "twocaptcha":
         print(f"{Fore.CYAN}[twocaptcha][hcaptcha] creating solver client with key={_mask_value(api_key)}{Fore.RESET}")
-        solver = TwoCaptcha(apiKey=api_key, softId=4663)
-        print(f"{Fore.CYAN}[twocaptcha][hcaptcha] sending hcaptcha solve request to 2Captcha{Fore.RESET}")
-        result = solver.hcaptcha(sitekey = sitekey, url = website)
-        print(f"{Fore.CYAN}[twocaptcha][hcaptcha] raw solver result: {result}{Fore.RESET}")
-        if result:
-            print(f"{Fore.LIGHTBLUE_EX}[{service}] Solved Hcaptcha, Submitting results to owobot...{Fore.RESET}")
-            print(f"{Fore.CYAN}[twocaptcha][hcaptcha] solution token preview: {_truncate_text(result.get('code'))}{Fore.RESET}")
-            return result['code']
-        else:
-            print("Hcaptcha Solve failed!")
+        solver = TwoCaptcha(apiKey=api_key, softId=4663, polling_interval=5, timeout=240)
+        print(f"{Fore.CYAN}[twocaptcha][hcaptcha] sending hcaptcha solve request to 2Captcha (timeout: 240s){Fore.RESET}")
+        try:
+            result = solver.hcaptcha(sitekey = sitekey, url = website)
+            print(f"{Fore.CYAN}[twocaptcha][hcaptcha] raw solver result: {result}{Fore.RESET}")
+            if result:
+                print(f"{Fore.LIGHTBLUE_EX}[{service}] Solved Hcaptcha, Submitting results to owobot...{Fore.RESET}")
+                print(f"{Fore.CYAN}[twocaptcha][hcaptcha] solution token preview: {_truncate_text(result.get('code'))}{Fore.RESET}")
+                return result['code']
+            else:
+                print(f"{Fore.RED}[twocaptcha][hcaptcha] hcaptcha solve returned empty result{Fore.RESET}")
+                return
+        except Exception as solver_error:
+            print(f"{Fore.RED}[twocaptcha][hcaptcha] solver exception: {solver_error}{Fore.RESET}")
             return
     elif service == "capmonster":
         payload = {
