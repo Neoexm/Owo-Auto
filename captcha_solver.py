@@ -72,7 +72,7 @@ def Hcaptcha_Solver():
                 return
     elif service == "twocaptcha":
         print(f"{Fore.CYAN}[twocaptcha][hcaptcha] creating solver client with key={_mask_value(api_key)}{Fore.RESET}")
-        solver = TwoCaptcha(apiKey=api_key, softId=4663, polling_interval=5, timeout=240)
+        solver = TwoCaptcha(apiKey=api_key, softId=4663, pollingInterval=5, timeout=240)
         print(f"{Fore.CYAN}[twocaptcha][hcaptcha] sending hcaptcha solve request to 2Captcha (timeout: 240s){Fore.RESET}")
         try:
             result = solver.hcaptcha(sitekey = sitekey, url = website)
